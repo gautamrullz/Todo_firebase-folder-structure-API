@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ToDo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src = "https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
+    <!-- <script src="app.js"></script> -->
+    <script src="js/todo.js"></script>
+
+    <style media="screen">
+
+        img {
+          /*margin-left: 10%;*/
+          margin-top: 10%;
+            width: 100%
+        }
+        li:hover{
+          background-color:#428bca;
+          color: #000;
+        }
+        #signupForm,#loginForm{
+          height: 400px;
+        }
+        #showimg{
+          height: 440px
+        }
+
+        /*li:visited{
+          border-bottom: 2px solid #428bca;
+        }*/
+
+        /*#signupForm {
+            display: none;
+        }*/
+        /*#nav{
+          top=0;
+        }*/
+        /*#menu{
+          float: right;
+          /*float: top;*/
+          /*margin-top:1%;*/
+          /*display:block;*/
+        /*}*/
+    </style>
+</head>
+
+<body>
+    <!-- <div class="container">
+        <div class="header well" id="head">
+            ToDo<img src="image/og.png" alt="image" id="headImg"></img>
+        </div> -->
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#home">ToDo</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li ><a href="#home">Home</a></li>
+          <li ><a href="#about">Abouts</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- <div class="container">
+        <div class="row">
+            <div class="col-sm-5 well">
+                <form id="signupForm" action="" method="GET">
+                    <div class="form-group">
+                        <lable>User_Name:</lable>
+                        <input type="text" class="form-control" placeholder="Enter User_Name" id="user_name" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Email:</lable>
+                        <input type="email" class="form-control" placeholder="Enter Email" id="email" required=""/>
+                    </div>
+                    <div class="radio" id="aa">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" value="male" checked>Male
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="gender" value="female">Female
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <lable>PhoneNo:</lable>
+                        <input type="number" class="form-control" placeholder="Phone no." id="pno"/>
+                    </div>home
+                    <div class="form-group">
+                        <lable>Password:</lable>
+                        <input type="Password" class="form-control" placeholder="Enter Password" id="pwd" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Re-Enter Password:</lable>
+                        <input type="password" class="form-control" placeholder="Re-Enter Password" id="rpwd" required=""/>
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-default" id="sendDetail" value="Sign Up">
+                        <input type="button" class="btn btn-default" id="back" value="Back">
+                    </div>
+                </form>
+
+                <form id="loginForm" action="" method="GET">
+                    <div class="form-group">
+                        <lable>Email:</lable>
+                        <input type="email"  class="form-control" placeholder="Enter Email" id="checkemail" required="" autofocus/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Password:</lable>
+                        <input type="password" class="form-control" placeholder="Enter Password" id="checkpwd" required="" />
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-default" id="login" value="Log In">
+                        <input type="button" class="btn btn-default" id="signup" value="Sign Up">
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-7 well">
+                <img src="image/og.png" alt="image"></img>
+            </div>
+        </div>
+      </div> -->
+</body>
+<div id="page-container">
+  <p>
+      <q><b>Welcome to ToDo app</b></q>
+  </p>
+</div>
+
+<script id="home-page-template" type="text/x-handlebars-template">
+    <div id="home-page" class="page">
+        <p>
+            <q><b>Welcome to ToDo app</b></q>
+        </p>
+    </div>
+</script>
+
+<script id="about-page-template" type="text/x-handlebars-template">
+    <div id="about-page" class="page">
+        <p>
+            <q><b>About</b></q>
+        </p>
+    </div>
+</script>
+
+<script id="contact-page-template" type="text/x-handlebars-template">
+    <div id="contact-page" class="page">
+        <p>
+            <q><b>  Contect Us On facebook</b></q>
+            <br>
+            <a altr="gautam kumar" href="https://www.facebook.com/gautamrullz" target="_blank">https://www.facebook.com/gautamrullz</a>
+        </p>
+    </div>
+</script>
+
+<script id="login-page-template" type="text/x-handlebars-template">
+  <div class="container">
+        <div class="row">
+            <div class="col-sm-5 well">
+                <form id="loginForm" action="" method="">
+                    <div class="form-group">
+                        <lable>Email:</lable>
+                        <input type="email"  class="form-control" placeholder="Enter Email" id="checkemail" required="" autofocus/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Password:</lable>
+                        <input type="password" class="form-control" placeholder="Enter Password" id="checkpwd" required="" />
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-default" id="login" value="Log In">
+                        <!-- <input type="button" class="btn btn-default" id="signup" value="Sign Up"> -->
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-7" id="showimg">
+                <img src="image/og.png" alt="image"></img>
+            </div>
+        </div>
+      </div>
+</script>
+
+<script id="signup-page-template" type="text/x-handlebars-template">
+  <div class="container">
+        <div class="row">
+            <div class="col-sm-5 well">
+                <form id="signupForm" action="" method="">
+                    <div class="form-group">
+                        <lable>User_Name:</lable>
+                        <input type="text" class="form-control" placeholder="Enter User_Name" id="user_name" required="" autofocus/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Email:</lable>
+                        <input type="email" class="form-control" placeholder="Enter Email" id="email" required=""/>
+                    </div>
+                    <div class="radio">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" value="male" checked>Male
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="gender" value="female">Female
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <lable>PhoneNo:</lable>
+                        <input type="number" class="form-control" placeholder="Phone no." id="pno"/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Password:</lable>
+                        <input type="Password" class="form-control" placeholder="Enter Password" id="pwd" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <lable>Re-Enter Password:</lable>
+                        <input type="password" class="form-control" placeholder="Re-Enter Password" id="rpwd" required=""/>
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-default" id="sendDetail" value="Sign Up">
+                        <!-- <input type="button" class="btn btn-default" id="back" value="Back"> -->
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-7" id="showimg">
+                <img src="image/og.png" alt="image"></img>
+            </div>
+        </div>
+      </div>
+</script>
+</html>
