@@ -1,14 +1,52 @@
 var detail = {};
 $(document).ready(function() {
 
-  if (sessionStorage.getItem("email") !== null) {
-      console.log(sessionStorage.getItem('email'));
-      // event.preventDefault();
-      callPage();
-      // return;
-  }
+    $.ajax({
+        type: "GET",
+        // data:list_detail,
+        // dataType: "json",
+        //headers:{"Content-Type":"application/json"},
+        url: "http://localhost:8081/checksession",
+        success: function(data) {
+            //  alert(data);
+            //  console.log(data.session);
+            if (data.session === false) {
+                console.log("no user");
+                //  window.location.hash = "#home";
+                indexPage();
+            } else {
+                callPage();
+            }
+        }
+    });
+
+    // if (sessionStorage.getItem("email") !== null) {
+    //     console.log(sessionStorage.getItem('email'));
+    //     // event.preventDefault();
+    //     callPage();
+    //     // return;
+    // }
     // $.ajax();
     // checkSession();
+    function indexPage() {
+        $.ajax({
+            url: "index.html",
+            type: "GET",
+            dataType: "html",
+            success: function(response) {
+                console.log('the page was loaded');
+                // $('body').html(response);
+            },
+            error: function(error) {
+                console.log('the page was NOT loaded', error);
+            },
+            complete: function(xhr, status) {
+                console.log("the request is complete!");
+            }
+        })
+    }
+
+
     function callPage() {
         $.ajax({
             url: "template/home.html",
@@ -26,16 +64,29 @@ $(document).ready(function() {
             }
         })
     }
-      $(document).on("click","#logout",(function() {
+    $(document).on("click", "#logout", (function() {
         // console.log("asddd");
-        sessionStorage.removeItem("email");
-      // window.location.origin = window.location.protocol + "//" + window.location.host;
-      window.location.hash = "#home";
-      location.reload();
+        // sessionStorage.removeItem("email");
+        $.ajax({
+            type: "GET",
+            // data:list_detail,
+            // dataType: "json",
+            //headers:{"Content-Type":"application/json"},
+            url: "http://localhost:8081/logout",
+            success: function(data) {
+                //  alert(data);
+                if (data.session == false) {
+                    window.location.hash = "#home";
+                    location.reload();
+                }
+                // callPage();
+            }
+        });
+        // window.location.origin = window.location.protocol + "//" + window.location.host;
         return;
     }));
 
-    $(document).on("submit", "#signupForm",(function(event) {
+    $(document).on("submit", "#signupForm", (function(event) {
         var user_name = $("#user_name").val();
         var email = $("#email").val();
         var gender = $("input:radio:checked").val();
@@ -44,21 +95,39 @@ $(document).ready(function() {
         var rpass = $("#rpwd").val();
         var list_detail = {};
         list_detail["user_name"] = user_name;
-        list_detail["email"]=email;
+        list_detail["email"] = email;
         list_detail["gender"] = gender;
         list_detail["phone_no"] = phone_no;
         list_detail["password"] = pass;
-         $.ajax({
-             type: "POST",
-             data:list_detail,
-             dataType: "json",
-             //headers:{"Content-Type":"application/json"},
-             url: "http://localhost:8081/signup",
-             success: function(data){
-                alert(data);
-                callPage();
-             }
-         });
+        $.ajax({
+            type: "POST",
+            data: list_detail,
+            dataType: "json",
+            //headers:{"Content-Type":"application/json"},
+            url: "http://localhost:8081/signup",
+            success: function(data) {
+                // alert(data);
+                if (data.status == true && data.session == true) {
+                    callPage();
+                    return;
+                }
+                if (data[0] !== undefined) {
+                    $("span").remove();
+                    $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data[0].msg + '</span>');
+                }else if(data.message!==undefined){
+                  console.log(data.message);
+                  $("span").remove();
+                  $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data.message + '</span>');
+                }
+
+
+            },
+            error: function(error) {
+                //  alert(data);
+                console.log("page not loded");
+            }
+            // callPage();
+        });
         // console.log(detail);
         // try {
         //
@@ -109,25 +178,47 @@ $(document).ready(function() {
         // } catch (error) {
         //     alert(error);
         // }
-        event.preventDefault();
+        // event.preventDefault();
     }));
 
-  $(document).on("submit", "#loginForm",(function(event) {
+    $(document).on("submit", "#loginForm", (function(event) {
         var email = $("#checkemail").val();
         var password = $("#checkpwd").val();
-        var logindata={};
-        logindata["email"]=email;
-        logindata["password"]=password;
-        JSON.stringify(logindata);
+        var logindata = {};
+        logindata["email"] = email;
+        logindata["password"] = password;
+        // JSON.stringify(logindata);
+        // console.log(logindata);
         $.ajax({
             type: "POST",
-            data:logindata,
+            data: logindata,
             dataType: "json",
-	           //headers:{"Content-Type":"application/json"},
+            //  headers:{"Content-Type":"application/json"},
             url: "http://localhost:8081/login",
-            success: function(data){
-               alert(data);
-               callPage();
+            success: function(data) {
+                //  alert(data);
+                //  callPage();
+                // console.log(data.status);
+                if (data.status == true && data.session == true) {
+                    callPage();
+                    return;
+                } else {
+                    if (data[0] !== undefined) {
+                        $("span").remove();
+                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data[0].msg + '</span>');
+                    }else if(data.message!==undefined){
+                      console.log(data.message);
+                      $("span").remove();
+                      // console.log(data);
+                      $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data.message + '</span>');
+                    }
+
+                }
+            },
+            error: function(error) {
+                //  alert(data);
+                alert("cant load the page");
+                console.log("page not loded");
             }
         });
         // try {
@@ -185,7 +276,7 @@ $(document).ready(function() {
         var regex = /^([7-9]{1}[0-9]{9})$/;
         return regex.test(phone_no);
     }
-//-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------
 
     // if (typeof window.location.origin === "undefined"){
     //     window.location.origin = window.location.protocol + "//" + window.location.host;
@@ -197,7 +288,7 @@ $(document).ready(function() {
         // Populates it with the passed in data
         // Appends the generated html to div#order-page-container
         renderPageTemplate: function(templateId, data) {
-          console.log(templateId);
+            console.log(templateId);
             var _data = data || {};
             var templateScript = $(templateId).html();
             var template = Handlebars.compile(templateScript);
@@ -276,8 +367,8 @@ $(document).ready(function() {
             // Hide whatever page is currently shown.
             $("#page-container")
                 .find(".active")
-                    .hide()
-                        .removeClass("active");
+                .hide()
+                .removeClass("active");
 
             // Call the the function
             // by key name
@@ -308,13 +399,13 @@ $(document).ready(function() {
             console.log('contact was called...');
             utils.renderPageTemplate("#contact-page-template");
         },
-        "#login": function(url){
-          console.log('login was called...');
-          utils.renderPageTemplate("#login-page-template");
+        "#login": function(url) {
+            console.log('login was called...');
+            utils.renderPageTemplate("#login-page-template");
         },
-        "#signup": function(url){
-          console.log('signup was called...');
-          utils.renderPageTemplate("#signup-page-template");
+        "#signup": function(url) {
+            console.log('signup was called...');
+            utils.renderPageTemplate("#signup-page-template");
         }
     };
 

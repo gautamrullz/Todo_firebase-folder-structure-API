@@ -1,9 +1,19 @@
 var express=require("express");
 var router=express.Router();
 var ref = require('../config');
-var validator = require('express-validator');
-router.use(validator());
+// var validator = require('express-validator');
+// router.use(validator());
+// router.get("/",function (request, response) {
+//   // console.log(request.cookies);
+//   // console.log("-------------------------------------");
+//   console.log(request.session);
+//   response.send({"status":true});
+// })
+
 router.post("/", function(request, response) {
+  // console.log(request.cookies);
+  // console.log("-------------------------------------");
+  // console.log(request.session);
 console.log(request.body);
     var email = request.body.email;
 	console.log(email);
@@ -62,31 +72,46 @@ console.log(request.body);
     }
 
     ref.orderByChild("email").equalTo(email).once("value", function(data) {
-        console.log(data.val());
+        // console.log(data.val());
         if (data.val() !== null) {
             data.forEach(function(snap) {
                 var temp = snap.val();
                 if (temp.password == password) {
+                  // request.session.regenerate();
+                  request.session=temp;
+                  // console.log(request.session);
+                  // request.session.save(function(err) {
+                  //   // session saved
+                  // })
+                  // request.session.destroy(function(err) {
+                  //   // cannot access session here
+                  // })
+                  // request.session.regenerate(function(err) {
+                  //   // will have a new session here
+                  // })
                     console.log("you are online");
                     response.send({
                         "status": true,
-                        "message": "you are online"
+                        "message": "you are online",
+                        "session":true
+
                     });
                 } else {
                     response.send({
                         "status": false,
                         "message": "Invalid password"
+
                     });
                 }
             });
         } else {
             response.send({
                 "status": false,
-                "message": "Invalid emailName"
+                "message": "Invalid email"
             });
         }
         // console.log(temp);
     });
 
 });
-module.exports=router; 
+module.exports=router;
