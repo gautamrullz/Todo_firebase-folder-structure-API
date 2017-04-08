@@ -1,0 +1,22 @@
+{
+  "name": "todo",
+  "main": "index.js",
+  "homepage": "https://github.com/gautamrullz/Todo_firebase-folder-structure-API",
+  "authors": [
+    "gautam <gautamk173@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "handlebars": "^4.0.5"
+  }
+}

@@ -15,58 +15,12 @@ $(document).ready(function() {
                 //  window.location.hash = "#home";
                 indexPage();
             } else {
-                callPage();
+                homePage();
             }
         }
     });
 
-    // if (sessionStorage.getItem("email") !== null) {
-    //     console.log(sessionStorage.getItem('email'));
-    //     // event.preventDefault();
-    //     callPage();
-    //     // return;
-    // }
-    // $.ajax();
-    // checkSession();
-    function indexPage() {
-        $.ajax({
-            url: "index.html",
-            type: "GET",
-            dataType: "html",
-            success: function(response) {
-                console.log('the page was loaded');
-                // $('body').html(response);
-            },
-            error: function(error) {
-                console.log('the page was NOT loaded', error);
-            },
-            complete: function(xhr, status) {
-                console.log("the request is complete!");
-            }
-        })
-    }
-
-
-    function callPage() {
-        $.ajax({
-            url: "template/home.html",
-            type: "GET",
-            dataType: "html",
-            success: function(response) {
-                // console.log('the page was loaded', response);
-                $('body').html(response);
-            },
-            error: function(error) {
-                console.log('the page was NOT loaded', error);
-            },
-            complete: function(xhr, status) {
-                console.log("the request is complete!");
-            }
-        })
-    }
     $(document).on("click", "#logout", (function() {
-        // console.log("asddd");
-        // sessionStorage.removeItem("email");
         $.ajax({
             type: "GET",
             // data:list_detail,
@@ -99,6 +53,7 @@ $(document).ready(function() {
         list_detail["gender"] = gender;
         list_detail["phone_no"] = phone_no;
         list_detail["password"] = pass;
+
         $.ajax({
             type: "POST",
             data: list_detail,
@@ -106,79 +61,32 @@ $(document).ready(function() {
             //headers:{"Content-Type":"application/json"},
             url: "http://localhost:8081/signup",
             success: function(data) {
-                // alert(data);
+                console.log(data);
                 if (data.status == true && data.session == true) {
-                    callPage();
+                    homePage();
                     return;
                 }
-                if (data[0] !== undefined) {
+                if (data['error'][0].msg !== undefined) {
                     $("span").remove();
-                    $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data[0].msg + '</span>');
-                }else if(data.message!==undefined){
-                  console.log(data.message);
-                  $("span").remove();
-                  $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data.message + '</span>');
+                    $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span>');
+                } else {
+                    if (rpass !== pass) {
+                        $("span").remove();
+                        $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbspPassword Missmatch</span>');
+                    } else {
+                        console.log(data['error']);
+                        $("span").remove();
+                        $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
+
+                    }
                 }
-
-
             },
             error: function(error) {
                 //  alert(data);
                 console.log("page not loded");
             }
-            // callPage();
         });
-        // console.log(detail);
-        // try {
-        //
-        //     if (user_name.length < 4) {
-        //         throw 'Re-Enter User Name "too Short"';
-        //     } else if (!checkPassword(pass)) {
-        //         throw "week password special char allowed @ # $ % & _";
-        //     } else if (!checkPhoneNo(phone_no)) {
-        //         throw "invalid phone no...!!!";
-        //     } else if (pass == rpass) {
-        //         if (localStorage.getItem("detail") == null) {
-        //             console.log("null");
-        //             detail[email] = list_detail;
-        //             if (typeof(Storage) !== "undefined")
-        //             {
-        //                 localStorage.setItem('detail', JSON.stringify(detail));
-        //                 // alert("thanks for Sign Up");
-        //                 event.preventDefault();
-        //                 sessionStorage.removeItem("email");
-        //                 sessionStorage.setItem("email", email);
-        //                 callPage();
-        //                 return;
-        //             }
-        //             else
-        //             {
-        //                 throw "localStorage not found";
-        //             }
-        //         } else {
-        //             detail = localStorage.getItem("detail");
-        //             var detail = JSON.parse(detail);
-        //             detail[email] = list_detail;
-        //             if (typeof(Storage) !== "undefined") {
-        //                 localStorage.setItem('detail', JSON.stringify(detail));
-        //                 // alert("thanks for Sign Up");
-        //                 event.preventDefault();
-        //                 sessionStorage.removeItem("email");
-        //                 sessionStorage.setItem("email", email);
-        //                 callPage();
-        //                 return;
-        //             } else {
-        //                 throw "localStorage not found";
-        //             }
-        //         }
-        //     } else {
-        //
-        //         throw "password miss match...!!! Re-Enter password";
-        //     }
-        // } catch (error) {
-        //     alert(error);
-        // }
-        // event.preventDefault();
+
     }));
 
     $(document).on("submit", "#loginForm", (function(event) {
@@ -187,8 +95,6 @@ $(document).ready(function() {
         var logindata = {};
         logindata["email"] = email;
         logindata["password"] = password;
-        // JSON.stringify(logindata);
-        // console.log(logindata);
         $.ajax({
             type: "POST",
             data: logindata,
@@ -196,86 +102,74 @@ $(document).ready(function() {
             //  headers:{"Content-Type":"application/json"},
             url: "http://localhost:8081/login",
             success: function(data) {
-                //  alert(data);
-                //  callPage();
-                // console.log(data.status);
+                console.log(data);
                 if (data.status == true && data.session == true) {
-                    callPage();
+                    homePage();
                     return;
                 } else {
-                    if (data[0] !== undefined) {
+                    if (data['error'][0].msg !== undefined) {
                         $("span").remove();
-                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data[0].msg + '</span>');
-                    }else if(data.message!==undefined){
-                      console.log(data.message);
-                      $("span").remove();
-                      // console.log(data);
-                      $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data.message + '</span>');
+                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span>');
+                    } else {
+                        // console.log(data.error);
+                        console.log(data['error']);
+                        $("span").remove();
+                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
+                        // console.log(data);
                     }
-
                 }
             },
             error: function(error) {
-                //  alert(data);
                 alert("cant load the page");
                 console.log("page not loded");
             }
         });
-        // try {
-        //     if (!checkEmail(email)) {
-        //         throw "incorrect email...!!!";
-        //         event.preventDefault();
-        //     }
-        // } catch (e) {
-        //     alert(e);
-        //     return;
-        // }
-        //geting stored data from localStorage
-        // var detail = localStorage.getItem("detail");
-        // var list_detail = JSON.parse(detail);
-        // console.log(list_detail);
-        // // console.log(dont);
-        // try {
-        //     //checking the local storage is null or not
-        //     if (list_detail == null) {
-        //         throw "please Sign Up";
-        //     }
-        //     //matching email in json
-        //     if (list_detail.hasOwnProperty(email)) {
-        //         //matching password
-        //         if (pwd == list_detail[email]["password"]) {
-        //             console.log(list_detail[email]);
-        //             event.preventDefault();
-        //             // if(typeof(Storage) !== "undefined") {
-        //             sessionStorage.setItem("email", email);
-        //             // }
-        //             //calling $.ajax() method to link to another page(home page)
-        //             callPage();
-        //             return;
-        //         } else {
-        //             throw "password incorrect";
-        //         }
-        //     } else {
-        //         throw "email not registered";
-        //     }
-        // } catch (e) {
-        //     alert(e);
-        //     // return;
-        // }
-        // event.preventDefault();
+
     }));
-    // var checkEmail = function(email) {
-    //   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    //   return regex.test(email);
-    // }
-    var checkPassword = function(pass) {
-        var regex = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z]*[A-Z])(?=.*[@#$%&_]).*$/;
-        return regex.test(pass);
+
+    function indexPage() {
+        $.ajax({
+            url: "index.html",
+            type: "GET",
+            dataType: "html",
+            success: function(response) {
+                console.log('the page was loaded');
+                // $('body').style({display:inline});
+                // $('body').html(response);
+                $('body').css("display", "inline");
+            },
+            error: function(error) {
+                console.log('the page was NOT loaded', error);
+            },
+            complete: function(xhr, status) {
+                console.log("the request is complete!");
+            }
+        })
     }
-    var checkPhoneNo = function(phone_no) {
-        var regex = /^([7-9]{1}[0-9]{9})$/;
-        return regex.test(phone_no);
+
+
+    function homePage() {
+        $.ajax({
+            url: "template/home.html",
+            type: "GET",
+            dataType: "html",
+            success: function(response) {
+                console.log('the page was loaded' );
+                // $('body').css("display","inline");
+                $('body').html(response);
+                $('body').css("display", "inline");
+
+            },
+            error: function(error) {
+                console.log('the page was NOT loaded', error);
+            },
+            complete: function(xhr, status) {
+                console.log("the request is complete!");
+            }
+        })
     }
+
+
     //-------------------------------------------------------------------------------------------------
 
     // if (typeof window.location.origin === "undefined"){
