@@ -18,6 +18,7 @@
     <!-- <script src="app.js"></script> -->
     <script src="js/todo.js"></script>
 
+
     <style media="screen">
         #errorMessage{
           color: red;
@@ -32,7 +33,7 @@
           color: #000;
         }
         #signupForm,#loginForm{
-          height: 400px;
+          height: 430px;
         }
         #showimg{
           height: 440px
@@ -40,20 +41,55 @@
         body{
           display:none
         }
-        /*li:visited{
-          border-bottom: 2px solid #428bca;
-        }*/
+        input[type='text']{
+          width: 65%;
+        }
+        input[type='email']{
+          width: 65%;
+        }
+        input[type='password']{
+          width: 65%;
+        }
+        input[type='number']{
+          width: 65%;
+        }
+        lable{
+          color: #428bca;
+        }
+        #loginForm{
+          margin-left: 27%;
+        }
+        #signupForm{
+          margin-left: 27%
+        }
+        #loginhead{
+          text-align: center;
+          color: #428bca;
+        }
+        #radiobutton{
+          color: #428bca;
+        }
+      #buttons{
+        margin-left: 20%;
+        /*background-color: #428bca;*/
+      }
+      input[type='submit']{
+        background-color: #428bca;
+        color:#fff;
+      }
+      #errorMessage{
 
-        /*#signupForm {
-            display: none;
-        }*/
-        
-        /*#menu{
-          float: right;
-          /*float: top;*/
-          /*margin-top:1%;*/
-          /*display:block;*/
-        /*}*/
+      }
+      #change{
+        margin-left: 4%;
+      }
+      #error{
+      text-align: center;
+      width: 190px;
+      /*left:0;*/
+
+      }
+
     </style>
 </head>
 
@@ -74,76 +110,19 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li ><a href="#home">Home</a></li>
-          <li ><a href="#about">Abouts</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li ><a data-toggle="collapse" data-target="#myNavbar" href="#home">Home</a></li>
+          <li ><a data-toggle="collapse" data-target="#myNavbar" href="#about" data-toggle="collapse" data-target=".nav-collapse.in">Abouts</a></li>
+          <li><a data-toggle="collapse" data-target="#myNavbar" href="#contact" data-toggle="collapse" data-target=".nav-collapse.in">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-          <li><a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li><a data-toggle="collapse" data-target="#myNavbar" href="#signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a data-toggle="collapse" data-target="#myNavbar" href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- <div class="container">
-        <div class="row">
-            <div class="col-sm-5 well">
-                <form id="signupForm" action="" method="GET">
-                    <div class="form-group">
-                        <lable>User_Name:</lable>
-                        <input type="text" class="form-control" placeholder="Enter User_Name" id="user_name" required=""/>
-                    </div>
-                    <div class="form-group">
-                        <lable>Email:</lable>
-                        <input type="email" class="form-control" placeholder="Enter Email" id="email" required=""/>
-                    </div>
-                    <div class="radio" id="aa">
-                        <label class="radio-inline">
-                            <input type="radio" name="gender" value="male" checked>Male
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="gender" value="female">Female
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <lable>PhoneNo:</lable>
-                        <input type="number" class="form-control" placeholder="Phone no." id="pno"/>
-                    </div>home
-                    <div class="form-group">
-                        <lable>Password:</lable>
-                        <input type="Password" class="form-control" placeholder="Enter Password" id="pwd" required=""/>
-                    </div>
-                    <div class="form-group">
-                        <lable>Re-Enter Password:</lable>
-                        <input type="password" class="form-control" placeholder="Re-Enter Password" id="rpwd" required=""/>
-                    </div>
-                    <div>
-                        <input type="submit" class="btn btn-default" id="sendDetail" value="Sign Up">
-                        <input type="button" class="btn btn-default" id="back" value="Back">
-                    </div>
-                </form>
 
-                <form id="loginForm" action="" method="GET">
-                    <div class="form-group">
-                        <lable>Email:</lable>
-                        <input type="email"  class="form-control" placeholder="Enter Email" id="checkemail" required="" autofocus/>
-                    </div>
-                    <div class="form-group">
-                        <lable>Password:</lable>
-                        <input type="password" class="form-control" placeholder="Enter Password" id="checkpwd" required="" />
-                    </div>
-                    <div>
-                        <input type="submit" class="btn btn-default" id="login" value="Log In">
-                        <input type="button" class="btn btn-default" id="signup" value="Sign Up">
-                    </div>
-                </form>
-            </div>
-            <div class="col-sm-7 well">
-                <img src="image/og.png" alt="image"></img>
-            </div>
-        </div>
-      </div> -->
 </body>
 <div id="page-container">
   <p>
@@ -151,7 +130,13 @@
   </p>
 </div>
 
-<script id="home-page-template" type="text/x-handlebars-template">
+<script id="home-page-template" type="text/x-handlebars-template">up" value="Sign Up">
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-7 well">
+                <img src="image/og.png" alt="image"></img>
+            </div>
     <div id="home-page" class="page">
         <p>
             <q><b>Welcome to ToDo app</b></q>
@@ -181,6 +166,8 @@
   <div class="container">
         <div class="row">
             <div class="col-sm-5 well">
+              <div id="loginhead"><h1>welcome to login...</h1></div>
+              <br>
                 <form id="loginForm" action="" method="">
                     <div class="form-group">
                         <lable>Email:</lable>
@@ -190,9 +177,15 @@
                         <lable>Password:</lable>
                         <input type="password" class="form-control" placeholder="Enter Password" id="checkpwd" required="" />
                     </div>
-                    <div>
+                    <div id="buttons">
                         <input type="submit" class="btn btn-default" id="login" value="Log In">
                         <!-- <input type="button" class="btn btn-default" id="signup" value="Sign Up"> -->
+                    </div>
+                    <br>
+                    <div>
+                      <h6 id="change">  not registered?   <a href="#signup">create an account</a></h6>
+                    </div>
+                    <div id="error">
                     </div>
                 </form>
             </div>
@@ -207,6 +200,8 @@
   <div class="container">
         <div class="row">
             <div class="col-sm-5 well">
+              <div id="loginhead"><h1>SignUp...</h1></div>
+              <br>
                 <form id="signupForm" action="" method="">
                     <div class="form-group">
                         <lable>User_Name:</lable>
@@ -216,7 +211,7 @@
                         <lable>Email:</lable>
                         <input type="email" class="form-control" placeholder="Enter Email" id="email" required=""/>
                     </div>
-                    <div class="radio">
+                    <div class="radio" id="radiobutton">
                         <label class="radio-inline">
                             <input type="radio" name="gender" value="male" checked>Male
                         </label>
@@ -236,9 +231,11 @@
                         <lable>Re-Enter Password:</lable>
                         <input type="password" class="form-control" placeholder="Re-Enter Password" id="rpwd" required=""/>
                     </div>
-                    <div>
+                    <div id="buttons">
                         <input type="submit" class="btn btn-default" id="sendDetail" value="Sign Up">
                         <!-- <input type="button" class="btn btn-default" id="back" value="Back"> -->
+                    </div>
+                    <div id="error">
                     </div>
                 </form>
             </div>

@@ -30,7 +30,7 @@ $(document).ready(function() {
             success: function(data) {
                 //  alert(data);
                 if (data.session == false) {
-                    window.location.hash = "#home";
+                    window.location.hash = "#login";
                     location.reload();
                 }
                 // callPage();
@@ -47,6 +47,23 @@ $(document).ready(function() {
         var phone_no = $("#pno").val();
         var pass = $("#pwd").val();
         var rpass = $("#rpwd").val();
+        if(!checkEmail(email)){
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbspInvalid Email</span>');
+          return;
+        }else if (!checkPhoneNo(phone_no)) {
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbspInvalid Number</span>');
+          return;
+        }else if (!checkPassword(pass)) {
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp Invalid Password</span>');
+          return;
+        }else if (pass!==rpass) {
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp Password Missmatch</span>');
+          return;
+        }
         var list_detail = {};
         list_detail["user_name"] = user_name;
         list_detail["email"] = email;
@@ -68,17 +85,18 @@ $(document).ready(function() {
                 }
                 if (data['error'][0].msg !== undefined) {
                     $("span").remove();
-                    $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span>');
+                    $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span>');
                 } else {
-                    if (rpass !== pass) {
-                        $("span").remove();
-                        $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbspPassword Missmatch</span>');
-                    } else {
+                  //check for repeat passwor
+                    // if (rpass !== pass) {
+                    //     $("span").remove();
+                    //     $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbspPassword Missmatch</span>');
+                    // } else {
                         console.log(data['error']);
                         $("span").remove();
-                        $("#sendDetail").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
+                        $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
 
-                    }
+                    // }
                 }
             },
             error: function(error) {
@@ -95,6 +113,15 @@ $(document).ready(function() {
         var logindata = {};
         logindata["email"] = email;
         logindata["password"] = password;
+        if(!checkEmail(email)){
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbspInvalid Email</span>');
+          return;
+        }else if (!checkPassword(password)) {
+          $("span").remove();
+          $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp Invalid Password</span>');
+          return;
+        }
         $.ajax({
             type: "POST",
             data: logindata,
@@ -109,12 +136,12 @@ $(document).ready(function() {
                 } else {
                     if (data['error'][0].msg !== undefined) {
                         $("span").remove();
-                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span>');
+                        $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'][0].msg + '</span >');
                     } else {
                         // console.log(data.error);
                         console.log(data['error']);
                         $("span").remove();
-                        $("#login").after('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
+                        $("#error").append('<span id="errorMessage">&nbsp&nbsp&nbsp' + data['error'] + '</span>');
                         // console.log(data);
                     }
                 }
@@ -168,7 +195,18 @@ $(document).ready(function() {
             }
         })
     }
-
+    var checkEmail = function(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email);
+    }
+    var checkPassword = function(pass) {
+        var regex = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z]*[A-Z])(?=.*[@#$%&_]).*$/;
+        return regex.test(pass);
+    }
+    var checkPhoneNo = function(phone_no) {
+        var regex = /^([7-9]{1}[0-9]{9})$/;
+        return regex.test(phone_no);
+    }
 
     //-------------------------------------------------------------------------------------------------
 
@@ -309,7 +347,7 @@ $(document).ready(function() {
     });
 
     spaRouter.init();
-    // window.location.hash = "#home";
+    // window.location.hash = "#login";
 
 
 

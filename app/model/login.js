@@ -22,7 +22,7 @@ this.checklogin = function(bodyData,request) {
       // console.log(errors);
       if (errors) {
           reject(errors);
-          // return;
+          return;
       }
 
       ref.orderByChild("email").equalTo(email).once("value", function(data) {

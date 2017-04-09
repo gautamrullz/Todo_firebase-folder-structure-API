@@ -9,14 +9,14 @@ var signup = function() {
             // console.log(email);
 
             request.checkBody('user_name', 'User name too short').len(4, 20);
-            request.checkBody("email", "Enter a valid email address.").isEmail();
-            request.checkBody('phone_no', 'invalid phone no "10 characters required"').matches(/^([7-9]{1}[0-9]{9})$/);
+            request.checkBody("email", "Enter a valid email address").isEmail();
+            request.checkBody('phone_no', 'invalid phone nunber"').matches(/^([7-9]{1}[0-9]{9})$/);
             request.checkBody("password", "Enter a valid password").matches(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z]*[A-Z])(?=.*[@#$%&_]).*$/);
             var errors = request.validationErrors();
             console.log(errors);
             if (errors) {
                 reject(errors);
-                // return;
+                return;
             }
 
             ref.orderByChild("email").equalTo(email).once("value", function(data) {
